@@ -36,8 +36,10 @@ local baseHeight = LootFrame:GetHeight() - (buttonHeight * LOOTFRAME_NUMBUTTONS)
 local old_LootFrame_Show = LootFrame_Show
 function LootFrame_Show(self, ...)
     LootFrame:SetHeight(baseHeight + (GetNumLootItems() * buttonHeight))
-    for i = LOOTFRAME_NUMBUTTONS, GetNumLootItems() do
-        CreateFrame("Button", "LootButton"..i, LootFrame, "LootButtonTemplate", i):SetPoint("TOP", "LootButton"..(i-1), "BOTTOM", 0, -4)
+    for i = LOOTFRAME_NUMBUTTONS+1, GetNumLootItems() do
+		if not _G["LootButton"..i] then
+			CreateFrame("Button", "LootButton"..i, LootFrame, "LootButtonTemplate", i):SetPoint("TOP", "LootButton"..(i-1), "BOTTOM", 0, -4)
+		end
         LOOTFRAME_NUMBUTTONS = i
     end
     return old_LootFrame_Show(self, ...)

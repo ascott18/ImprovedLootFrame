@@ -38,7 +38,9 @@ function LootFrame_Show(self, ...)
     LootFrame:SetHeight(baseHeight + (GetNumLootItems() * buttonHeight))
     for i = LOOTFRAME_NUMBUTTONS+1, GetNumLootItems() do
 		if not _G["LootButton"..i] then
-			CreateFrame("Button", "LootButton"..i, LootFrame, "LootButtonTemplate", i):SetPoint("TOP", "LootButton"..(i-1), "BOTTOM", 0, -4)
+			local f = CreateFrame("Button", "LootButton"..i, LootFrame, "LootButtonTemplate", i)
+			local p, _, r, x, y = LootButton2:GetPoint(1)
+			f:SetPoint(p, "LootButton"..(i-1), r, x, y)
 		end
         LOOTFRAME_NUMBUTTONS = i
     end

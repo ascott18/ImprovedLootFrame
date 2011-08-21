@@ -32,17 +32,40 @@ mid:SetPoint("BOTTOM", bottom, "TOP")
 
 local buttonHeight = LootButton1:GetHeight() + abs(select(5, LootButton2:GetPoint()))
 local baseHeight = LootFrame:GetHeight() - (buttonHeight * LOOTFRAME_NUMBUTTONS)
+local p, _, r, x, y = LootButton2:GetPoint(1)
 
 local old_LootFrame_Show = LootFrame_Show
 function LootFrame_Show(self, ...)
     LootFrame:SetHeight(baseHeight + (GetNumLootItems() * buttonHeight))
     for i = LOOTFRAME_NUMBUTTONS+1, GetNumLootItems() do
 		if not _G["LootButton"..i] then
-			local f = CreateFrame("Button", "LootButton"..i, LootFrame, "LootButtonTemplate", i)
-			local p, _, r, x, y = LootButton2:GetPoint(1)
-			f:SetPoint(p, "LootButton"..(i-1), r, x, y)
+			CreateFrame("Button", "LootButton"..i, LootFrame, "LootButtonTemplate", i):SetPoint(p, "LootButton"..(i-1), r, x, y)
 		end
         LOOTFRAME_NUMBUTTONS = i
     end
     return old_LootFrame_Show(self, ...)
+end
+
+-- the following is inspired by http://us.battle.net/wow/en/forum/topic/2353268564 and is hacktastic
+local framesRegistered = {}
+local function populateframesRegistered(...)
+	wipe(framesRegistered)
+	for i = 1, select("#", ...) do
+		framesRegistered[i] = select(i, ...)
+	end
+end
+
+local old_LootButton_OnClick = LootButton_OnClick
+function LootButton_OnClick(self, ...)
+	populateframesRegistered(GetFramesRegisteredForEvent("ADDON_ACTION_BLOCKED"))
+	
+	for i, frame in pairs(framesRegistered) do
+		frame:UnregisterEvent("ADDON_ACTION_BLOCKED") -- fuck the rice-a-roni! (Blizzard throws a false taint error when attemping to loot the coins from a mob when the coins are the only loot on the mob)
+	end
+	
+	old_LootButton_OnClick(self, ...)
+	
+	for i, frame in pairs(framesRegistered) do
+		frame:RegisterEvent("ADDON_ACTION_BLOCKED")
+	end
 end

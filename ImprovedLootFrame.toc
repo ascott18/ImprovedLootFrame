@@ -1,7 +1,7 @@
 ﻿## Interface: 40200
 ## Title: Improved Loot Frame
-## Version: 1.1
+## Version: 2.0
 ## Author: Cybeloras of Mal'Ganis
-## Notes: Condenses all loot onto one page instead of having three items per page with scroll buttons.
+## Notes: Expands the loot frame to fit all items onto one page.
 
 ImprovedLootFrame.lua

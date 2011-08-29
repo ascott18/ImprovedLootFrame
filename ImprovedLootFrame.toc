@@ -4,4 +4,7 @@
 ## Author: Cybeloras of Mal'Ganis
 ## Notes: Expands the loot frame to fit all items onto one page.
 
+## LoadManagers: AddonLoader
+## X-LoadOn-Execute: LootFrame:HookScript("OnShow", function(self) if not IsAddOnLoaded("ImprovedLootFrame") then AddonLoader:LoadAddOn("ImprovedLootFrame") LootFrame_Show(self) end end)
+
 ImprovedLootFrame.lua

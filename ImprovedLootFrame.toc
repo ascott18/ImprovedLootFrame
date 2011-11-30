@@ -1,6 +1,6 @@
-﻿## Interface: 40200
+﻿## Interface: 40300
 ## Title: Improved Loot Frame
-## Version: 2.3
+## Version: 2.4
 ## Author: Cybeloras of Mal'Ganis
 ## Notes: Expands the loot frame to fit all items onto one page.
 

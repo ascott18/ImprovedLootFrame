@@ -1,8 +1,7 @@
-﻿## Interface: 40300
-## X-Compatible-With: 50001
+﻿## Interface: 50001
 ## Title: Improved Loot Frame
-## Version: 3.0
-## Author: Cybeloras of Mal'Ganis
+## Version: 3.1
+## Author: Cybeloras of Detheroc/Mal'Ganis
 ## Notes: Expands the loot frame to fit all items onto one page.
 
 ## LoadManagers: AddonLoader

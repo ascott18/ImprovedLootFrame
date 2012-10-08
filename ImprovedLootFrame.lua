@@ -1,7 +1,7 @@
 ﻿
 -- --------------------------
 -- Improved Loot Frame
--- By Cybeloras of Mal'Ganis
+-- By Cybeloras of Detheroc/Mal'Ganis
 -- --------------------------
 
 local LovelyLootLoaded = IsAddOnLoaded("LovelyLoot")

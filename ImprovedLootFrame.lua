@@ -54,9 +54,12 @@ if ISMOP then
 end
 local old_LootFrame_Show = LootFrame_Show
 function LootFrame_Show(self, ...)
-	LootFrame:SetHeight(baseHeight + (GetNumLootItems() * buttonHeight))
-	local num = GetNumLootItems()
-	for i = 1, GetNumLootItems() do
+	local maxButtons = floor(UIParent:GetHeight()/LootButton1:GetHeight()) - 6
+	
+	local num = min(GetNumLootItems(), maxButtons)
+
+	LootFrame:SetHeight(baseHeight + (num * buttonHeight))
+	for i = 1, num do
 		if i > LOOTFRAME_NUMBUTTONS then
 			local button = _G["LootButton"..i]
 			if not button then

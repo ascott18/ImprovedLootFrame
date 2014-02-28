@@ -7,7 +7,6 @@
 local LovelyLootLoaded = IsAddOnLoaded("LovelyLoot")
 local ISMOP = select(4, GetBuildInfo()) >= 50000
 
-LovelyLootLoaded = true
 if not LovelyLootLoaded then
 
 	-- Woah, nice coding, blizz.

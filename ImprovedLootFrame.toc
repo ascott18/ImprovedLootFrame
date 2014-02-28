@@ -1,6 +1,6 @@
 ﻿## Interface: 50400
 ## Title: Improved Loot Frame
-## Version: 3.3
+## Version: 3.4
 ## Author: Cybeloras of Detheroc/Mal'Ganis
 ## Notes: Expands the loot frame to fit all items onto one page.
 

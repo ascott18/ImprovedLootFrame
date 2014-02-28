@@ -7,12 +7,13 @@
 local LovelyLootLoaded = IsAddOnLoaded("LovelyLoot")
 local ISMOP = select(4, GetBuildInfo()) >= 50000
 
-
--- Woah, nice coding, blizz.
--- Anchor something positioned at the top of the frame to the center of the frame instead,
--- and make it an anonymous font string so I have to work to find it
-local i, t = 1, "Interface\\LootFrame\\UI-LootPanel"
 if not LovelyLootLoaded then
+
+	-- Woah, nice coding, blizz.
+	-- Anchor something positioned at the top of the frame to the center of the frame instead,
+	-- and make it an anonymous font string so I have to work to find it
+	local i, t = 1, "Interface\\LootFrame\\UI-LootPanel"
+
 	while true do
 		local r = select(i, LootFrame:GetRegions())
 		if not r then break end
@@ -46,15 +47,55 @@ if not LovelyLootLoaded then
 	end
 end
 
+-- Calculate base height of the loot frame
 local p, r, x, y = "TOP", "BOTTOM", 0, -4
 local buttonHeight = LootButton1:GetHeight() + abs(y)
 local baseHeight = LootFrame:GetHeight() - (buttonHeight * LOOTFRAME_NUMBUTTONS)
 if ISMOP then
 	baseHeight = baseHeight - 5
 end
+
+LootFrame.OverflowText = LootFrame:CreateFontString(nil, "OVERLAY", "GameFontRedSmall")
+local OverflowText = LootFrame.OverflowText
+
+OverflowText:ClearAllPoints()
+OverflowText:SetPoint("TOP", LootFrame, "TOP", 0, -26)
+OverflowText:SetPoint("LEFT", LootFrame, "LEFT", 60, 0)
+OverflowText:SetPoint("RIGHT", LootFrame, "RIGHT", -8, 0)
+OverflowText:SetPoint("BOTTOM", LootFrame, "TOP", 0, -65)
+
+OverflowText:SetSize(1, 1)
+
+OverflowText:SetJustifyH("LEFT")
+OverflowText:SetJustifyV("TOP")
+
+OverflowText:SetText("Hit 50-mob limit! Take some, then re-loot for more.")
+
+OverflowText:Hide()
+
+local t = {}
+local function CalculateNumMobsLooted()
+	wipe(t)
+
+	for i = 1, GetNumLootItems() do
+		for n = 1, select("#", GetLootSourceInfo(i)), 2 do
+			local GUID, num = select(n, GetLootSourceInfo(i))
+			t[GUID] = true
+		end
+	end
+
+	local n = 0
+	for k, v in pairs(t) do
+		n = n + 1
+	end
+
+	return n
+end
+
+
 local old_LootFrame_Show = LootFrame_Show
 function LootFrame_Show(self, ...)
-	local maxButtons = floor(UIParent:GetHeight()/LootButton1:GetHeight()) - 6
+	local maxButtons = floor(UIParent:GetHeight()/LootButton1:GetHeight() * 0.75)
 	
 	local num = min(GetNumLootItems(), maxButtons)
 
@@ -73,30 +114,43 @@ function LootFrame_Show(self, ...)
 			button:SetPoint(p, "LootButton"..(i-1), r, x, y)
 		end
 	end
+
+	if CalculateNumMobsLooted() >= 50 then
+		OverflowText:Show()
+	else
+		OverflowText:Hide()
+	end
+
 	
 	return old_LootFrame_Show(self, ...)
 end
 
--- the following is inspired by http://us.battle.net/wow/en/forum/topic/2353268564 and is hacktastic
-local framesRegistered = {}
-local function populateframesRegistered(...)
-	wipe(framesRegistered)
-	for i = 1, select("#", ...) do
-		framesRegistered[i] = select(i, ...)
-	end
-end
 
-local old_LootButton_OnClick = LootButton_OnClick
-function LootButton_OnClick(self, ...)
-	populateframesRegistered(GetFramesRegisteredForEvent("ADDON_ACTION_BLOCKED"))
+
+-- It seems the the taint is no longer an issue, so this code has been commented out.
+
+-- the following is inspired by http://us.battle.net/wow/en/forum/topic/2353268564 and is hacktastic
+-- local framesRegistered = {}
+-- local function populateframesRegistered(...)
+-- 	wipe(framesRegistered)
+-- 	for i = 1, select("#", ...) do
+-- 		framesRegistered[i] = select(i, ...)
+-- 	end
+-- end
+
+-- local old_LootButton_OnClick = LootButton_OnClick
+-- function LootButton_OnClick(self, ...)
+-- 	populateframesRegistered(GetFramesRegisteredForEvent("ADDON_ACTION_BLOCKED"))
 	
-	for i, frame in pairs(framesRegistered) do
-		frame:UnregisterEvent("ADDON_ACTION_BLOCKED") -- fuck the rice-a-roni! (Blizzard throws a false taint error when attemping to loot the coins from a mob when the coins are the only loot on the mob)
-	end
+-- 	-- Blizzard throws a false taint error when attemping to loot
+-- 	-- coins from a mob when the coins are the only loot on the mob
+-- 	for i, frame in pairs(framesRegistered) do
+-- 		frame:UnregisterEvent("ADDON_ACTION_BLOCKED") 
+-- 	end
 	
-	old_LootButton_OnClick(self, ...)
+-- 	old_LootButton_OnClick(self, ...)
 	
-	for i, frame in pairs(framesRegistered) do
-		frame:RegisterEvent("ADDON_ACTION_BLOCKED")
-	end
-end
+-- 	for i, frame in pairs(framesRegistered) do
+-- 		frame:RegisterEvent("ADDON_ACTION_BLOCKED")
+-- 	end
+-- end

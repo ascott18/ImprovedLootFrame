@@ -7,6 +7,7 @@
 local LovelyLootLoaded = IsAddOnLoaded("LovelyLoot")
 local ISMOP = select(4, GetBuildInfo()) >= 50000
 
+LovelyLootLoaded = true
 if not LovelyLootLoaded then
 
 	-- Woah, nice coding, blizz.
@@ -51,18 +52,22 @@ end
 local p, r, x, y = "TOP", "BOTTOM", 0, -4
 local buttonHeight = LootButton1:GetHeight() + abs(y)
 local baseHeight = LootFrame:GetHeight() - (buttonHeight * LOOTFRAME_NUMBUTTONS)
-if ISMOP then
+if ISMOP and not LovelyLootLoaded then
 	baseHeight = baseHeight - 5
 end
 
 LootFrame.OverflowText = LootFrame:CreateFontString(nil, "OVERLAY", "GameFontRedSmall")
 local OverflowText = LootFrame.OverflowText
 
-OverflowText:ClearAllPoints()
 OverflowText:SetPoint("TOP", LootFrame, "TOP", 0, -26)
 OverflowText:SetPoint("LEFT", LootFrame, "LEFT", 60, 0)
 OverflowText:SetPoint("RIGHT", LootFrame, "RIGHT", -8, 0)
 OverflowText:SetPoint("BOTTOM", LootFrame, "TOP", 0, -65)
+
+if LovelyLootLoaded then
+	OverflowText:SetPoint("LEFT", LootFrame, "RIGHT", 10, 0)
+	OverflowText:SetPoint("RIGHT", LootFrame, "RIGHT", -10 + LootFrame:GetWidth(), 0)
+end
 
 OverflowText:SetSize(1, 1)
 

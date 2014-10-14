@@ -6,6 +6,13 @@
 
 local LovelyLootLoaded = IsAddOnLoaded("LovelyLoot")
 local ISMOP = select(4, GetBuildInfo()) >= 50000
+local ISWOD = select(4, GetBuildInfo()) >= 60000
+
+
+if ISWOD then
+	LOOTFRAME_AUTOLOOT_DELAY = 0.5;
+	LOOTFRAME_AUTOLOOT_RATE = 0.1;
+end
 
 if not LovelyLootLoaded then
 
@@ -99,9 +106,19 @@ end
 
 local old_LootFrame_Show = LootFrame_Show
 function LootFrame_Show(self, ...)
-	local maxButtons = floor(UIParent:GetHeight()/LootButton1:GetHeight() * 0.75)
+	local maxButtons = floor(UIParent:GetHeight()/LootButton1:GetHeight() * 0.7)
 	
-	local num = min(GetNumLootItems(), maxButtons)
+	local num = GetNumLootItems()
+
+	if ISWOD then
+		if self.AutoLootTable then
+			num = #self.AutoLootTable
+		end
+
+		self.AutoLootDelay = 0.4 + (num * 0.05)
+	end
+
+	num = min(num, maxButtons)
 
 	LootFrame:SetHeight(baseHeight + (num * buttonHeight))
 	for i = 1, num do

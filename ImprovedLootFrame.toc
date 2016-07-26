@@ -1,8 +1,8 @@
-﻿## Interface: 60000
+﻿## Interface: 70000
 ## X-CompatibleWith: 50400
 ## Title: Improved Loot Frame
-## Version: 3.6
-## Author: Cybeloras of Detheroc/Mal'Ganis
+## Version: 3.6.1
+## Author: Cybeloras of Aerie Peak
 ## Notes: Expands the loot frame to fit all items onto one page.
 
 ## LoadManagers: AddonLoader

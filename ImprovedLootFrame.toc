@@ -1,7 +1,7 @@
 ﻿## Interface: 70000
 ## X-CompatibleWith: 50400
 ## Title: Improved Loot Frame
-## Version: 3.6.1
+## Version: 3.6.2
 ## Author: Cybeloras of Aerie Peak
 ## Notes: Expands the loot frame to fit all items onto one page.
 

@@ -117,15 +117,15 @@ function LootFrame_Show(self, ...)
 
 		self.AutoLootDelay = 0.4 + (num * 0.05)
 	end
-
+	
 	num = min(num, maxButtons)
-
+	
 	LootFrame:SetHeight(baseHeight + (num * buttonHeight))
 	for i = 1, num do
 		if i > LOOTFRAME_NUMBUTTONS then
 			local button = _G["LootButton"..i]
 			if not button then
-				button = CreateFrame("Button", "LootButton"..i, LootFrame, "LootButtonTemplate", i)
+				button = CreateFrame("ItemButton", "LootButton"..i, LootFrame, "LootButtonTemplate", i)
 			end
 			LOOTFRAME_NUMBUTTONS = i
 		end

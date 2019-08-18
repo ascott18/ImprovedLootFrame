@@ -5,52 +5,27 @@
 -- --------------------------
 
 local LovelyLootLoaded = IsAddOnLoaded("LovelyLoot")
-local ISMOP = select(4, GetBuildInfo()) >= 50000
-local ISWOD = select(4, GetBuildInfo()) >= 60000
 
+local wow_classic = WOW_PROJECT_ID and WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 
-if ISWOD then
-	LOOTFRAME_AUTOLOOT_DELAY = 0.5;
-	LOOTFRAME_AUTOLOOT_RATE = 0.1;
-end
+LOOTFRAME_AUTOLOOT_DELAY = 0.5;
+LOOTFRAME_AUTOLOOT_RATE = 0.1;
 
 if not LovelyLootLoaded then
 
 	-- Woah, nice coding, blizz.
 	-- Anchor something positioned at the top of the frame to the center of the frame instead,
 	-- and make it an anonymous font string so I have to work to find it
-	local i, t = 1, "Interface\\LootFrame\\UI-LootPanel"
+	local i = 1
 
 	while true do
 		local r = select(i, LootFrame:GetRegions())
 		if not r then break end
 		if r.GetText and r:GetText() == ITEMS then
 			r:ClearAllPoints()
-			r:SetPoint("TOP", ISMOP and 12 or -12, ISMOP and -5 or -19.5)
-		elseif not ISMOP and r.GetTexture and r:GetTexture() == t then
-			r:Hide()
+			r:SetPoint("TOP", 12, -5)
 		end
 		i = i + 1
-	end
-
-	if not ISMOP then
-		local top = LootFrame:CreateTexture("LootFrameBackdropTop")
-		top:SetTexture(t)
-		top:SetTexCoord(0, 1, 0, 0.3046875)
-		top:SetPoint("TOP")
-		top:SetHeight(78)
-
-		local bottom = LootFrame:CreateTexture("LootFrameBackdropBottom")
-		bottom:SetTexture(t)
-		bottom:SetTexCoord(0, 1, 0.9296875, 1)
-		bottom:SetPoint("BOTTOM")
-		bottom:SetHeight(18)
-
-		local mid = LootFrame:CreateTexture("LootFrameBackdropMiddle")
-		mid:SetTexture(t)
-		mid:SetTexCoord(0, 1, 0.3046875, 0.9296875)
-		mid:SetPoint("TOP", top, "BOTTOM")
-		mid:SetPoint("BOTTOM", bottom, "TOP")
 	end
 end
 
@@ -58,7 +33,7 @@ end
 local p, r, x, y = "TOP", "BOTTOM", 0, -4
 local buttonHeight = LootButton1:GetHeight() + abs(y)
 local baseHeight = LootFrame:GetHeight() - (buttonHeight * LOOTFRAME_NUMBUTTONS)
-if ISMOP and not LovelyLootLoaded then
+if not LovelyLootLoaded then
 	baseHeight = baseHeight - 5
 end
 
@@ -110,13 +85,11 @@ function LootFrame_Show(self, ...)
 	
 	local num = GetNumLootItems()
 
-	if ISWOD then
-		if self.AutoLootTable then
-			num = #self.AutoLootTable
-		end
-
-		self.AutoLootDelay = 0.4 + (num * 0.05)
+	if self.AutoLootTable then
+		num = #self.AutoLootTable
 	end
+
+	self.AutoLootDelay = 0.4 + (num * 0.05)
 	
 	num = min(num, maxButtons)
 	
@@ -125,7 +98,7 @@ function LootFrame_Show(self, ...)
 		if i > LOOTFRAME_NUMBUTTONS then
 			local button = _G["LootButton"..i]
 			if not button then
-				button = CreateFrame("ItemButton", "LootButton"..i, LootFrame, "LootButtonTemplate", i)
+				button = CreateFrame(wow_classic and "Button" or "ItemButton", "LootButton"..i, LootFrame, "LootButtonTemplate", i)
 			end
 			LOOTFRAME_NUMBUTTONS = i
 		end

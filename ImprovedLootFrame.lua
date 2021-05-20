@@ -6,8 +6,8 @@
 
 local LovelyLootLoaded = IsAddOnLoaded("LovelyLoot")
 
-LOOTFRAME_AUTOLOOT_DELAY = 0.5;
-LOOTFRAME_AUTOLOOT_RATE = 0.1;
+-- LOOTFRAME_AUTOLOOT_DELAY = 0.5;
+-- LOOTFRAME_AUTOLOOT_RATE = 0.1;
 
 if not LovelyLootLoaded then
 
@@ -49,12 +49,9 @@ if LovelyLootLoaded then
 end
 
 OverflowText:SetSize(1, 1)
-
 OverflowText:SetJustifyH("LEFT")
 OverflowText:SetJustifyV("TOP")
-
 OverflowText:SetText("Hit 50-mob limit! Take some, then re-loot for more.")
-
 OverflowText:Hide()
 
 local t = {}
@@ -76,9 +73,7 @@ local function CalculateNumMobsLooted()
 	return n
 end
 
-
-local old_LootFrame_Show = LootFrame_Show
-function LootFrame_Show(self, ...)
+hooksecurefunc("LootFrame_Show", function(self, ...)
 	local maxButtons = floor(UIParent:GetHeight()/LootButton1:GetHeight() * 0.7)
 	
 	local num = GetNumLootItems()
@@ -112,10 +107,9 @@ function LootFrame_Show(self, ...)
 	else
 		OverflowText:Hide()
 	end
-
 	
-	return old_LootFrame_Show(self, ...)
-end
+	LootFrame_Update();
+end)
 
 
 

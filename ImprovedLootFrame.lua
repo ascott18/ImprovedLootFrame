@@ -4,7 +4,7 @@
 -- By Cybeloras of Detheroc/Mal'Ganis
 -- --------------------------
 
-local LovelyLootLoaded = IsAddOnLoaded("LovelyLoot")
+local LovelyLootLoaded = C_AddOns.IsAddOnLoaded("LovelyLoot")
 
 -- LOOTFRAME_AUTOLOOT_DELAY = 0.5;
 -- LOOTFRAME_AUTOLOOT_RATE = 0.1;

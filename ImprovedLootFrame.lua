@@ -4,30 +4,31 @@
 -- By Cybeloras of Detheroc/Mal'Ganis
 -- --------------------------
 
-local LovelyLootLoaded = IsAddOnLoaded("LovelyLoot")
 
 -- LOOTFRAME_AUTOLOOT_DELAY = 0.5;
 -- LOOTFRAME_AUTOLOOT_RATE = 0.1;
 
-if not LovelyLootLoaded then
-
-	-- Woah, nice coding, blizz.
-	-- Anchor something positioned at the top of the frame to the center of the frame instead,
-	-- and make it an anonymous font string so I have to work to find it
-	local i = 1
-
-	while true do
-		local r = select(i, LootFrame:GetRegions())
-		if not r then break end
-		if r.GetText and r:GetText() == ITEMS then
-			r:ClearAllPoints()
-			r:SetPoint("TOP", 12, -5)
-		end
-		i = i + 1
-	end
-end
-
 if LootButton1 then
+	local LovelyLootLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded or IsAddOnLoaded)("LovelyLoot")
+
+	if not LovelyLootLoaded then
+	
+		-- Woah, nice coding, blizz.
+		-- Anchor something positioned at the top of the frame to the center of the frame instead,
+		-- and make it an anonymous font string so I have to work to find it
+		local i = 1
+	
+		while true do
+			local r = select(i, LootFrame:GetRegions())
+			if not r then break end
+			if r.GetText and r:GetText() == ITEMS then
+				r:ClearAllPoints()
+				r:SetPoint("TOP", 12, -5)
+			end
+			i = i + 1
+		end
+	end
+
 	-- Calculate base height of the loot frame
 	local p, r, x, y = "TOP", "BOTTOM", 0, -4
 	local buttonHeight = LootButton1:GetHeight() + abs(y)

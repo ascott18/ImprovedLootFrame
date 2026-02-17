@@ -1,4 +1,4 @@
-﻿## Interface: 110002
+﻿## Interface: 120001
 ## Interface-Classic: 11503
 ## Interface-Cata: 40400
 ## Title: Improved Loot Frame

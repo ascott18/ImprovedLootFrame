@@ -2,7 +2,7 @@
 ## Interface-Classic: 11508
 ## Interface-Cata: 40402
 ## Title: Improved Loot Frame
-## Version: 4.0.1
+## Version: 4.0.2
 ## Author: Cybeloras of Aerie Peak
 ## Notes: Expands the loot frame to fit all items onto one page.
 ## X-Curse-Project-ID: 30888
